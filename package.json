@@ -1,0 +1,17 @@
+{
+  "name": "email-checker-17",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "agenda": "^1.0.3",
+    "email-verify": "^0.2.1",
+    "mongojs": "^2.6.0",
+    "signale": "^1.2.1"
+  }
+}
