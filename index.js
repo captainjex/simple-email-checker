@@ -1,9 +1,10 @@
+require('dotenv').config()
 console.log('asw');
 const mongoString = process.env.MONGO_STRING || 'mongodb://127.0.0.1/example'
+console.log('mongo', mongoString);
 
 const express = require('express')
 const app = express()
-require('dotenv').config()
 
 const mongojs = require('mongojs')
 const signale = require('signale');
