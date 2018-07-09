@@ -10,19 +10,19 @@ module.exports = function (agenda, db) {
         done(err)
       } else {
         if (info.success) {
-          db.emailFls17.findAndModify({
-            query: { bio_email: job.attrs.data.email },
+          db.emailList.findAndModify({
+            query: { email: job.attrs.data.email },
             update: { $set: { verified: true } },
             new: true
           }, function (err, doc, lastErrorObject) {
             // doc.tag === 'maintainer'
             if(err) done(err)
-            signale.success('email verified', doc.bio_email)
+            signale.success('email verified', doc.email)
             done()
           });
         } else {
           signale.fatal('[email verify not success]', info.info);
-          done(info.info)
+          done(info)
         }
       }
     })

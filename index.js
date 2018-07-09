@@ -3,22 +3,25 @@ const mongoString = process.env.MONGO_STRING || 'mongodb://127.0.0.1/example'
 
 const express = require('express')
 const app = express()
+require('dotenv').config()
 
 const mongojs = require('mongojs')
 const signale = require('signale');
 const Agenda = require('agenda');
 var Agendash = require('agendash');
 
-const db = mongojs(mongoString, ['emailFls17'])
+const db = mongojs(mongoString, ['emailList'])
 
 const agenda = new Agenda({ db: { address: mongoString } });
-// agenda.processEvery('3 minutes')
-agenda.processEvery('20 seconds')
+agenda.processEvery('1 minutes')
+// agenda.processEvery('20 seconds')
 agenda.maxConcurrency(5);
 agenda.defaultLockLimit(5);
 
+let pass = process.env.PASS || 'pass'
+
 let dashMiddleware = (req, res, next) => {
-  if (req.params.pass == 'wkwksama') {
+  if (req.params.pass == pass) {
     next()
   } else {
     res.send('dilarang masuk')
@@ -30,16 +33,16 @@ app.get('/tes', (req, res) => {
   res.json('Hello World!')
 })
 
-db.emailFls17.find({
-  bio_email: { $nin: [null] }
+db.emailList.find({
+  email: { $nin: [null] }
 }).forEach(function(err, doc) {
   if (err) return console.log('err', err);
   if (!doc) return
-  signale.watch('>> email masuk schedule', doc.bio_email)
+  signale.watch('>> email masuk schedule', doc.email)
   require('./utils/schedule-email')(agenda, db)
   agenda.start()
   agenda.now('verify email', {
-    email: doc.bio_email,
+    email: doc.email,
   });
 });
 
