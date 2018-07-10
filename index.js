@@ -39,6 +39,7 @@ db.emailList.find({
 }).forEach(function(err, doc) {
   if (err) return console.log('err', err);
   if (!doc) return
+  if (doc.verified) return
   signale.watch('>> email masuk schedule', doc.email)
   require('./utils/schedule-email')(agenda, db)
   agenda.start()
